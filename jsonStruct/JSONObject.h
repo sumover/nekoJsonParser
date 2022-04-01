@@ -27,6 +27,8 @@ public:
 
     void set(std::string &key, std::unique_ptr<JSONBody> &val);
 
+    void set(std::string, std::unique_ptr<JSONBody>);
+
     void set(const std::string &key, int val);
 
     void set(const std::string &key, double val);
