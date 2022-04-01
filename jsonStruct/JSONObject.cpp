@@ -11,14 +11,6 @@
 #include "JSONBody.h"
 
 
-void JSONObject::set(std::string &&key, std::unique_ptr<JSONBody> &val) {
-    fields[key] = std::move(val);
-}
-
-void JSONObject::set(std::string &key, std::unique_ptr<JSONBody> &val) {
-    fields[key] = std::move(val);
-}
-
 std::string JSONObject::toString() {
     if (fields.empty()) return "{}";
     std::string res = "{\n";
