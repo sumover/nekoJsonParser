@@ -11,7 +11,7 @@
 class JSONArray : public JSONBody {
     typedef std::unique_ptr<JSONBody> pJSONBody;
 
-    std::vector<pJSONBody > array;
+    std::vector<pJSONBody> array;
 
 public:
     JSONArray();
@@ -20,7 +20,7 @@ public:
 
     ~JSONArray() override;
 
-    pJSONBody& get(int index);
+    pJSONBody &get(int index);
 
     void append(pJSONBody val);
 
