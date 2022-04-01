@@ -7,7 +7,7 @@
 #include <JSONNull.h>
 
 TEST(NullParser, test1) {
-    JSONNull *jsonNull = new JSONNull();
+    std::unique_ptr<JSONNull> jsonNull = std::make_unique<JSONNull>();
     JSONParser parser("null");
     int code = jsonNull->parse(parser);
     ASSERT_EQ(code, 0);
@@ -15,7 +15,7 @@ TEST(NullParser, test1) {
 }
 
 TEST(nullparser, test2) {
-    JSONNull *jsonNull = new JSONNull();
+    std::unique_ptr<JSONNull> jsonNull = std::make_unique<JSONNull>();
     JSONParser parser("123213123");
     int code = jsonNull->parse(parser);
     ASSERT_NE(code, 0);
