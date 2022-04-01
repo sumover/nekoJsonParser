@@ -81,6 +81,6 @@ JSONArray::JSONArray() : array() {
 
 }
 
-JSONArray::JSONArray(JSONArray &&jsonArray) noexcept: array(jsonArray.array) {
+JSONArray::JSONArray(JSONArray &&jsonArray) noexcept: array(std::move(jsonArray.array)) {
 
 }
