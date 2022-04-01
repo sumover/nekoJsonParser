@@ -100,34 +100,42 @@ JSONObject::~JSONObject() {
 }
 
 void JSONObject::set(const std::string &key, int val) {
-    JSONBody *number = new JSONNumber(val);
-    this->set(key, number);
+    std::unique_ptr<JSONBody> number = std::make_unique<JSONNumber>(val);
+    this->set(key, std::move(number));
 }
 
 void JSONObject::set(const std::string &key, double val) {
-    JSONBody *number = new JSONNumber(val);
-    this->set(key, number);
+    std::unique_ptr<JSONBody> number = std::make_unique<JSONNumber>(val);
+    this->set(key, std::move(number));
 }
 
 void JSONObject::set(const std::string &key, const std::string &val) {
-    JSONBody *json_str = new JSONString(val);
-    this->set(key, json_str);
+    std::unique_ptr<JSONBody> json_str = std::make_unique<JSONString>(val);
+    this->set(key, std::move(json_str));
 }
 
 void JSONObject::setNull(const std::string &key) {
-    this->set(key, new JSONNull());
+    this->set(key, std::make_unique<JSONNull>());
 }
 
 void JSONObject::set(const std::string &key, bool val) {
-    JSONBody *json_bool = new JSONBool(val);
-    this->set(key, json_bool);
+    std::unique_ptr<JSONBody> json_bool = std::make_unique<JSONBool>(val);
+    this->set(key, std::move(json_bool));
 }
 
-JSONObject::JSONObject(JSONObject &&jsonObject) noexcept: fields(jsonObject.fields) {
+JSONObject::JSONObject(JSONObject &&jsonObject) noexcept: fields(std::move(jsonObject.fields)) {
 
 }
 
-unsigned JSONObject::count(const std::string &key) {
+void JSONObject::set(std::string &&key, std::unique_ptr<JSONBody> &val) {
+    fields[key] = std::move(val);
+}
 
+void JSONObject::set(std::string &key, std::unique_ptr<JSONBody> &val) {
+    fields[key] = std::move(val);
+}
+
+void JSONObject::set(std::string key, std::unique_ptr<JSONBody> val) {
+    fields[key] = std::move(val);
 }
 
