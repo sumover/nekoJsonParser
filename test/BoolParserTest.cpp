@@ -4,7 +4,8 @@
 
 #include <gtest/gtest.h>
 
-#include <JSONBool.h>
+#include "../parser/JSONParser.h"
+#include "../jsonStruct/JSONBool.h"
 
 TEST(jsonbool, false_test) {
     JSONParser jsonParser("false");

@@ -7,7 +7,7 @@
 
 #include <string>
 
-#include "JSONParser.h"
+#include "../parser/JSONParser.h"
 
 class JSONBody {
 public:

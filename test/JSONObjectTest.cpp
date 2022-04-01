@@ -11,14 +11,14 @@
 
 class JSONObjectTest : public testing::Test {
 public:
-    JSONParser *parser;
+    JSONParser *parser = nullptr;
     JSONObject jsonObject;
     std::vector<std::string> filePaths = {
-            "E:\\jsonParser\\testData\\test1.json",
-            "E:\\jsonParser\\testData\\test2.json",
-            "E:\\jsonParser\\testData\\test3.json",
-            "E:\\jsonParser\\testData\\test4.json",
-            "E:\\jsonParser\\testData\\test5.json"
+            R"(E:\jsonParser\testData\test1.json)",
+            R"(E:\jsonParser\testData\test2.json)",
+            R"(E:\jsonParser\testData\test3.json)",
+            R"(E:\jsonParser\testData\test4.json)",
+            R"(E:\jsonParser\testData\test5.json)"
     };
     std::vector<char *> json;
 protected:

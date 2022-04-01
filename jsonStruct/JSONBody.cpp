@@ -10,6 +10,7 @@
 #include "JSONBool.h"
 #include "JSONNull.h"
 #include "JSONNumber.h"
+#include "../parser/JSONParser.h"
 
 JSONBody *JSONBody::valueParse(JSONParser &jsonParser) {
     jsonParser.skipWhiteSpace();

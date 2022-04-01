@@ -21,6 +21,7 @@ add_executable(
 target_link_libraries(tests
         PRIVATE
         parser
+        jsonStruct
         gtest_main
         )
 

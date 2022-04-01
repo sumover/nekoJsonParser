@@ -121,7 +121,7 @@ int JSONString::parse(JSONParser &jsonParser) {
                         break;
                     default: {
                         jsonParser.setErrorCode(-1);
-                        char *err = "no control character like \\ ";
+                        char *err = R"(no control character like \ )";
                         err[strlen(err) - 1] = jsonParser.peek();
                         jsonParser.setErrorInfo(err);
                         return -1;
