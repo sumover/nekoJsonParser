@@ -29,9 +29,7 @@ public:
 
     JSONBody *get(std::string &&key);
 
-    unsigned count(std::string key) {
-        return fields.count(key);
-    }
+    unsigned count(const std::string &key) { return fields.count(key); }
 
     bool empty() const { return fields.empty(); }
 
