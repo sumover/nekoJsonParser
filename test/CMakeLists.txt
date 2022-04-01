@@ -3,7 +3,7 @@ include(FetchContent)
 # 导入后的代码在输出文件夹下的/_deps/gtest-src
 FetchContent_Declare(gtest
         QUIET
-        URL https://github.com/google/googletest/archive/release-1.10.0.tar.gz
+        URL https://github.com/google/googletest/archive/refs/tags/release-1.11.0.tar.gz
         )
 
 # configure build of googletest
