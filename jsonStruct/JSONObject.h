@@ -17,6 +17,8 @@ public:
 
     JSONObject() {}
 
+    JSONObject(JSONObject &&jsonObject) noexcept;
+
     ~JSONObject() override;
 
     JSONObject(const JSONObject &jsonObject) = default;
