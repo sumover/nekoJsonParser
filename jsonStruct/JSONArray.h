@@ -9,22 +9,23 @@
 #include <vector>
 
 class JSONArray : public JSONBody {
-    typedef std::unique_ptr<JSONBody> pJSONBody;
 
-    std::vector<pJSONBody> array;
+    std::vector<std::unique_ptr<JSONBody> > array;
 
 public:
     JSONArray();
 
     JSONArray(const JSONArray &jsonArray) = default;
 
+    JSONArray(JSONArray &&jsonArray) noexcept ;
+
     ~JSONArray() override;
 
-    pJSONBody &get(int index);
+    std::unique_ptr<JSONBody> &get(int index);
 
-    void append(pJSONBody val);
+    void append(std::unique_ptr<JSONBody> val);
 
-    void set(int index, pJSONBody val);
+    void set(int index, std::unique_ptr<JSONBody> val);
 
     std::string toString() override;
 
