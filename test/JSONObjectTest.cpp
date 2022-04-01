@@ -11,7 +11,7 @@
 
 class JSONObjectTest : public testing::Test {
 public:
-    JSONParser *parser = nullptr;
+    std::unique_ptr<JSONParser> parser = nullptr;
     JSONObject jsonObject;
     std::vector<std::string> filePaths = {
             R"(testData/test1.json)",
@@ -23,7 +23,7 @@ public:
     std::vector<char *> json;
 protected:
     void SetUp() override {
-        parser = new JSONParser();
+        parser = std::make_unique<JSONParser>();
         for (const auto &filePath: filePaths) {
             std::ifstream reader(filePath.c_str());
             char *s_json = (char *) malloc(sizeof(char) * 256);
@@ -58,8 +58,8 @@ TEST_F(JSONObjectTest, test_1) {
     ASSERT_FALSE(parser->error());
     ASSERT_FALSE(jsonObject.empty());
     ASSERT_EQ(1, jsonObject.count("a"));
-    auto val = jsonObject.get("a");
-    auto number = dynamic_cast<JSONNumber *>(val);
+    auto &val = jsonObject.get("a");
+    auto number = dynamic_cast<JSONNumber * >(val.get());
     ASSERT_EQ(int(*number), 123123);
 }
 

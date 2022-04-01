@@ -11,7 +11,7 @@
 
 class JSONObject : public JSONBody {
 private:
-    std::map<std::string, JSONBody *> fields;
+    std::map<std::string, std::unique_ptr<JSONBody>> fields;
 
 public:
 
@@ -21,13 +21,23 @@ public:
 
     JSONObject(const JSONObject &jsonObject) = default;
 
-    void set(std::string &&key, JSONBody *val);
+    void set(std::string &&key, std::unique_ptr<JSONBody> &val);
 
-    void set(std::string &key, JSONBody *val);
+    void set(std::string &key, std::unique_ptr<JSONBody> &val);
 
-    JSONBody *get(const std::string &key);
+    void set(const std::string &key, int val);
 
-    JSONBody *get(std::string &&key);
+    void set(const std::string &key, double val);
+
+    void set(const std::string &key, const std::string &val);
+
+    void set(const std::string &key, bool val);
+
+    void setNull(const std::string &key);
+
+    std::unique_ptr<JSONBody> &get(const std::string &key);
+
+    std::unique_ptr<JSONBody> &get(std::string &&key);
 
     unsigned count(const std::string &key) { return fields.count(key); }
 

@@ -19,3 +19,5 @@ int JSONBool::parse(JSONParser &jsonParser) {
     } else return -1;
     return 0;
 }
+
+JSONBool::JSONBool(bool v) : val(v) {}

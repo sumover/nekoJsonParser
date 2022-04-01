@@ -4,14 +4,19 @@
 
 #include "JSONObject.h"
 #include "JSONString.h"
+#include "JSONBool.h"
+#include "JSONNumber.h"
+#include "JSONArray.h"
+#include "JSONNull.h"
+#include "JSONBody.h"
 
 
-void JSONObject::set(std::string &&key, JSONBody *val) {
-    fields[key] = val;
+void JSONObject::set(std::string &&key, std::unique_ptr<JSONBody> &val) {
+    fields[key] = std::move(val);
 }
 
-void JSONObject::set(std::string &key, JSONBody *val) {
-    fields[key] = val;
+void JSONObject::set(std::string &key, std::unique_ptr<JSONBody> &val) {
+    fields[key] = std::move(val);
 }
 
 std::string JSONObject::toString() {
@@ -27,11 +32,11 @@ std::string JSONObject::toString() {
     return res + "\n}\n";
 }
 
-JSONBody *JSONObject::get(const std::string &key) {
+std::unique_ptr<JSONBody> &JSONObject::get(const std::string &key) {
     return this->fields[key];
 }
 
-JSONBody *JSONObject::get(std::string &&key) {
+std::unique_ptr<JSONBody> &JSONObject::get(std::string &&key) {
     return this->fields[key];
 }
 
@@ -54,7 +59,7 @@ int JSONObject::parse(JSONParser &jsonParser) {
         return 0;
     }
     JSONString key;
-    JSONBody *value;
+    std::unique_ptr<JSONBody> value;
     key.parse(jsonParser);
     if (jsonParser.error()) return jsonParser.getErrorCode();
     jsonParser.skipWhiteSpace();
@@ -63,9 +68,9 @@ int JSONObject::parse(JSONParser &jsonParser) {
         jsonParser.setErrorInfo("expect `:` between key and value");
         return -1;
     } else jsonParser.get();
-    value = JSONBody::valueParse(jsonParser);
+    value = std::move(JSONBody::valueParse(jsonParser));
     if (jsonParser.error()) return jsonParser.getErrorCode();
-    fields[std::string(key.c_str())] = value;
+    fields[std::string(key.c_str())] = std::move(value);
     while (true) {
         jsonParser.skipWhiteSpace();
         if (!jsonParser) {
@@ -85,7 +90,7 @@ int JSONObject::parse(JSONParser &jsonParser) {
             } else jsonParser.get();
             value = JSONBody::valueParse(jsonParser);
             if (jsonParser.error()) return jsonParser.getErrorCode();
-            fields[std::string(key.c_str())] = value;
+            fields[std::string(key.c_str())] = std::move(value);
             continue;
         } else if (jsonParser.peek() == '}') {
             jsonParser.get();
@@ -100,8 +105,29 @@ int JSONObject::parse(JSONParser &jsonParser) {
 }
 
 JSONObject::~JSONObject() {
-    for (auto &item: fields) {
-        delete item.second;
-    }
+}
+
+void JSONObject::set(const std::string &key, int val) {
+    JSONBody *number = new JSONNumber(val);
+    this->set(key, number);
+}
+
+void JSONObject::set(const std::string &key, double val) {
+    JSONBody *number = new JSONNumber(val);
+    this->set(key, number);
+}
+
+void JSONObject::set(const std::string &key, const std::string &val) {
+    JSONBody *json_str = new JSONString(val);
+    this->set(key, json_str);
+}
+
+void JSONObject::setNull(const std::string &key) {
+    this->set(key, new JSONNull());
+}
+
+void JSONObject::set(const std::string &key, bool val) {
+    JSONBody *json_bool = new JSONBool(val);
+    this->set(key, json_bool);
 }
 

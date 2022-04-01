@@ -6,6 +6,7 @@
 #define JSONPARSER_JSONBODY_H
 
 #include <string>
+#include <memory>
 
 #include "../parser/JSONParser.h"
 
@@ -19,7 +20,7 @@ public:
 
     virtual int parse(JSONParser &jsonParser) = 0;
 
-    static JSONBody *valueParse(JSONParser &jsonParser);
+    static std::unique_ptr<JSONBody> valueParse(JSONParser &jsonParser);
 };
 
 

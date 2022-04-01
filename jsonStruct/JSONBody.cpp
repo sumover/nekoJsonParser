@@ -12,31 +12,33 @@
 #include "JSONNumber.h"
 #include "../parser/JSONParser.h"
 
-JSONBody *JSONBody::valueParse(JSONParser &jsonParser) {
+#include <memory>
+
+std::unique_ptr<JSONBody> JSONBody::valueParse(JSONParser &jsonParser) {
     jsonParser.skipWhiteSpace();
-    JSONBody *value = nullptr;
+    std::unique_ptr<JSONBody> value = nullptr;
     if (jsonParser.peek() == '[') {
-        value = new JSONArray();
+        value = std::make_unique<JSONArray>();
         int code = value->parse(jsonParser);
         if (code != 0) return nullptr;
     } else if (jsonParser.peek() == '{') {
-        value = new JSONObject();
+        value = std::make_unique<JSONObject>();
         int code = value->parse(jsonParser);
         if (code != 0) return nullptr;
     } else if (jsonParser.peek() == '\"') {
-        value = new JSONString();
+        value = std::make_unique<JSONString>();
         int code = value->parse(jsonParser);
         if (code != 0) return nullptr;
     } else if (jsonParser.peek() == 't' || jsonParser.peek() == 'f') {
-        value = new JSONBool();
+        value = std::make_unique<JSONBool>();
         int code = value->parse(jsonParser);
         if (code != 0) return nullptr;
     } else if (jsonParser.peek() == 'n') {
-        value = new JSONNull();
+        value = std::make_unique<JSONNull>();
         int code = value->parse(jsonParser);
         if (code != 0)return nullptr;
     } else if (std::isdigit(jsonParser.peek()) || jsonParser.peek() == '-') {
-        value = new JSONNumber();
+        value = std::make_unique<JSONNumber>();
         int code = value->parse(jsonParser);
         if (code != 0) return nullptr;
     } else {

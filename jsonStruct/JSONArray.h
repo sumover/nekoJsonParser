@@ -9,7 +9,9 @@
 #include <vector>
 
 class JSONArray : public JSONBody {
-    std::vector<JSONBody *> array;
+    typedef std::unique_ptr<JSONBody> pJSONBody;
+
+    std::vector<pJSONBody > array;
 
 public:
     JSONArray();
@@ -18,11 +20,11 @@ public:
 
     ~JSONArray() override;
 
-    JSONBody *get(int index);
+    pJSONBody& get(int index);
 
-    void append(JSONBody *val);
+    void append(pJSONBody val);
 
-    void set(int index, JSONBody *val);
+    void set(int index, pJSONBody val);
 
     std::string toString() override;
 

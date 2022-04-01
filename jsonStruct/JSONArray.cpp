@@ -4,23 +4,23 @@
 
 #include "JSONArray.h"
 
-JSONBody *JSONArray::get(int index) {
-    return this->array[index];
+JSONArray::pJSONBody &JSONArray::get(int index) {
+    return this->array.at(index);
 }
 
-void JSONArray::append(JSONBody *val) {
-    this->array.push_back(val);
+void JSONArray::append(JSONArray::pJSONBody val) {
+    this->array.push_back(std::move(val));
 }
 
-void JSONArray::set(int index, JSONBody *val) {
-    this->array[index] = val;
+void JSONArray::set(int index, JSONArray::pJSONBody val) {
+    this->array[index] = std::move(val);
 }
 
 std::string JSONArray::toString() {
     if (array.empty()) return "[]";
     std::string res = "[";
     bool flag = false;
-    for (const auto &item: array) {
+    for (JSONArray::pJSONBody &item: array) {
         if (flag) res += " ,";
         res += item->toString();
         flag = true;
@@ -37,7 +37,7 @@ int JSONArray::parse(JSONParser &jsonParser) {
         return -1;
     }
     jsonParser.skipWhiteSpace();
-    JSONBody *value = nullptr;
+    pJSONBody value;
     if (!jsonParser) {
         jsonParser.setErrorCode(-1);
         jsonParser.setErrorInfo("missing `]`");
@@ -47,8 +47,8 @@ int JSONArray::parse(JSONParser &jsonParser) {
         jsonParser.get();
         return 0;
     }
-    value = JSONBody::valueParse(jsonParser);
-    array.push_back(value);
+    value = std::move(JSONBody::valueParse(jsonParser));
+    array.push_back(std::move(value));
     if (jsonParser.getErrorCode() != 0) return jsonParser.getErrorCode();
     while (true) {
         jsonParser.skipWhiteSpace();
@@ -61,7 +61,7 @@ int JSONArray::parse(JSONParser &jsonParser) {
             jsonParser.get();
             value = JSONBody::valueParse(jsonParser);
             if (jsonParser.getErrorCode() != 0) return jsonParser.getErrorCode();
-            array.push_back(value);
+            array.push_back(std::move(value));
             continue;
         } else if (jsonParser.peek() == ']') break;
         else {
@@ -75,7 +75,6 @@ int JSONArray::parse(JSONParser &jsonParser) {
 }
 
 JSONArray::~JSONArray() {
-    for (auto item: array) delete item;
 }
 
 JSONArray::JSONArray() : array() {
