@@ -131,3 +131,11 @@ void JSONObject::set(const std::string &key, bool val) {
     this->set(key, json_bool);
 }
 
+JSONObject::JSONObject(JSONObject &&jsonObject) noexcept: fields(jsonObject.fields) {
+
+}
+
+unsigned JSONObject::count(const std::string &key) {
+
+}
+
