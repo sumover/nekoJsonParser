@@ -11,7 +11,6 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 set(BUILD_GMOCK OFF CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(gtest)
 
-# 添加一个测试文件
 add_executable(
         tests
         test1.cpp
