@@ -11,12 +11,12 @@ public:
             R"("aa")",
             R"("")",
             R"("aa\taa\naa\baa")",
-            R"("aa\"")"
+            R"("aa\"")",
     }, result = {
             "aa",
             "",
             "aa\taa\naa\baa",
-            "aa\""
+            R"(aa")"
     };
     std::vector<int> codes = {
             0, 0, 0, 0
