@@ -4,15 +4,15 @@
 
 #include "JSONArray.h"
 
-JSONArray::pJSONBody &JSONArray::get(int index) {
+std::unique_ptr<JSONBody> &JSONArray::get(int index) {
     return this->array.at(index);
 }
 
-void JSONArray::append(JSONArray::pJSONBody val) {
+void JSONArray::append(std::unique_ptr<JSONBody> val) {
     this->array.push_back(std::move(val));
 }
 
-void JSONArray::set(int index, JSONArray::pJSONBody val) {
+void JSONArray::set(int index, std::unique_ptr<JSONBody> val) {
     this->array[index] = std::move(val);
 }
 
@@ -20,7 +20,7 @@ std::string JSONArray::toString() {
     if (array.empty()) return "[]";
     std::string res = "[";
     bool flag = false;
-    for (JSONArray::pJSONBody &item: array) {
+    for (std::unique_ptr<JSONBody> &item: array) {
         if (flag) res += " ,";
         res += item->toString();
         flag = true;
@@ -37,7 +37,7 @@ int JSONArray::parse(JSONParser &jsonParser) {
         return -1;
     }
     jsonParser.skipWhiteSpace();
-    pJSONBody value;
+    std::unique_ptr<JSONBody> value;
     if (!jsonParser) {
         jsonParser.setErrorCode(-1);
         jsonParser.setErrorInfo("missing `]`");
@@ -78,5 +78,9 @@ JSONArray::~JSONArray() {
 }
 
 JSONArray::JSONArray() : array() {
+
+}
+
+JSONArray::JSONArray(JSONArray &&jsonArray) noexcept: array(jsonArray.array) {
 
 }
