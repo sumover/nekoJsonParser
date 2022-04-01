@@ -15,7 +15,7 @@ std::string JSONObject::toString() {
     if (fields.empty()) return "{}";
     std::string res = "{\n";
     bool flag = false;
-    for (const auto &pair: fields) {
+    for (auto &&pair: fields) {
         if (flag) res += ",\n";
         JSONString key(pair.first);
         res += key.toString() + " : " + pair.second->toString();
