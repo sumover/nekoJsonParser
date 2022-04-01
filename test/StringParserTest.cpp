@@ -8,10 +8,10 @@ class StringParserTest : public testing::Test {
 public:
     int size = 0;
     std::vector<const char *> json = {
-            "\"aa\"",
-            "\"\"",
-            "\"aa\\taa\\naa\\baa\"",
-            "\"aa\\\"\""
+            R"("aa")",
+            R"("")",
+            R"("aa\taa\naa\baa")",
+            R"("aa\"")"
     }, result = {
             "aa",
             "",
