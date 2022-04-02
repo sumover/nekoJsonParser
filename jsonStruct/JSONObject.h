@@ -43,12 +43,15 @@ public:
 
     std::unique_ptr<JSONBody> &get(std::string &&key);
 
+    void removeKey(const std::string &);
+
+    std::map<std::string, std::unique_ptr<JSONBody>> &getDict();
+
     unsigned count(const std::string &key) { return fields.count(key); }
 
     bool empty() const { return fields.empty(); }
 
     size_t size() const { return fields.size(); }
-
 
     std::string toString() override;
 

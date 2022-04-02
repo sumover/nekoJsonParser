@@ -17,11 +17,13 @@ public:
 
     JSONArray(const JSONArray &jsonArray) = default;
 
-    JSONArray(JSONArray &&jsonArray) noexcept ;
+    JSONArray(JSONArray &&jsonArray) noexcept;
 
     ~JSONArray() override;
 
     std::unique_ptr<JSONBody> &get(int index);
+
+    std::vector<std::unique_ptr<JSONBody>> &getArray();
 
     void append(std::unique_ptr<JSONBody> val);
 

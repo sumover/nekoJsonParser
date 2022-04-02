@@ -84,3 +84,7 @@ JSONArray::JSONArray() : array() {
 JSONArray::JSONArray(JSONArray &&jsonArray) noexcept: array(std::move(jsonArray.array)) {
 
 }
+
+std::vector<std::unique_ptr<JSONBody>> &JSONArray::getArray() {
+    return this->array;
+}

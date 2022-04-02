@@ -139,3 +139,10 @@ void JSONObject::set(std::string key, std::unique_ptr<JSONBody> val) {
     fields[key] = std::move(val);
 }
 
+std::map<std::string, std::unique_ptr<JSONBody>> &JSONObject::getDict() {
+    return this->fields;
+}
+
+void JSONObject::removeKey(const std::string& key) {
+    this->fields.erase(key);
+}
